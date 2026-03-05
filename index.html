@@ -15,7 +15,7 @@ body{
     overflow:hidden;
 }
 
-/* ===== SUSPENSE ===== */
+/* SUSPENSE */
 .suspense{
     position:fixed;
     width:100%;
@@ -30,16 +30,10 @@ body{
     text-align:center;
 }
 
-.fade{
-    opacity:0;
-    transition:2s;
-}
+.fade{opacity:0; transition:2s;}
+.show{opacity:1;}
 
-.show{
-    opacity:1;
-}
-
-/* ===== INTRO ===== */
+/* INTRO */
 .intro{
     position:fixed;
     width:100%;
@@ -52,12 +46,7 @@ body{
     z-index:10;
 }
 
-.intro h1{
-    font-size:42px;
-    text-align:center;
-    padding:20px;
-}
-
+.intro h1{font-size:40px; text-align:center; padding:20px;}
 .intro button{
     margin-top:20px;
     padding:12px 30px;
@@ -66,10 +55,9 @@ body{
     color:white;
     font-size:16px;
     cursor:pointer;
-    border-radius:5px;
 }
 
-/* ===== GALERIA CINEMÁTICA ===== */
+/* GALERIA */
 .galeria{
     position:absolute;
     width:100%;
@@ -96,7 +84,7 @@ body{
     to{transform:scale(1.1);}
 }
 
-/* ===== FRASES ===== */
+/* FRASE */
 .frase{
     position:absolute;
     bottom:60px;
@@ -105,10 +93,9 @@ body{
     font-size:24px;
     background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
     padding:30px;
-    transition:1s;
 }
 
-/* ===== CREDITOS ===== */
+/* CREDITOS */
 .creditos{
     position:fixed;
     width:100%;
@@ -127,42 +114,36 @@ body{
 
 <body>
 
-<!-- SUSPENSE -->
 <div class="suspense" id="suspense">
     <div id="textoSuspense" class="fade"></div>
 </div>
 
-<!-- INTRO -->
 <div class="intro" id="intro">
     <h1>Nem toda história começa com planos...</h1>
     <button onclick="iniciar()">Começar</button>
 </div>
 
-<!-- GALERIA -->
 <div class="galeria">
-    <img src="foto.jpeg" class="active">
+    <img src="foto.jpeg">
     <img src="foto1.jpeg">
     <img src="foto2.jpeg">
     <img src="foto3.jpeg">
     <img src="foto4.jpeg">
 </div>
 
-<!-- FRASE -->
 <div class="frase" id="frase"></div>
 
-<!-- CREDITOS -->
 <div class="creditos" id="creditos">
     Do seu amor, Vini ❤️
 </div>
 
-<!-- MUSICA -->
 <audio id="musica" loop>
     <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-/* ===== SUSPENSE ===== */
+/* SUSPENSE */
 const suspenseTextos = [
 "Espera...",
 "Antes de começar...",
@@ -183,17 +164,17 @@ function mostrarSuspense(){
             sIndex++;
         },1000);
     } else {
+        clearInterval(loopSuspense);
         setTimeout(()=>{
             document.getElementById("suspense").style.display="none";
             document.getElementById("intro").style.display="flex";
         },2000);
-        clearInterval(loopSuspense);
     }
 }
 
 let loopSuspense = setInterval(mostrarSuspense,4000);
 
-/* ===== SHOW PRINCIPAL ===== */
+/* SHOW */
 const frases = [
 "Mas às vezes começa com um olhar diferente...",
 "E sem perceber, você já se tornou especial.",
@@ -202,29 +183,35 @@ const frases = [
 "E talvez… seja só o começo de algo lindo."
 ];
 
-let index=0;
-const fotos=document.querySelectorAll(".galeria img");
-const frase=document.getElementById("frase");
+let index = 0;
+const fotos = document.querySelectorAll(".galeria img");
+const frase = document.getElementById("frase");
+let intervalo;
 
 function iniciar(){
     document.getElementById("intro").style.display="none";
     document.getElementById("musica").play();
-    frase.innerText=frases[0];
+
+    fotos[0].classList.add("active");
+    frase.innerText = frases[0];
+
+    intervalo = setInterval(trocarFoto,6000);
 }
 
-let intervalo = setInterval(()=>{
-    if(index < fotos.length-1){
-        fotos[index].classList.remove("active");
-        index++;
+function trocarFoto(){
+    fotos[index].classList.remove("active");
+    index++;
+
+    if(index < fotos.length){
         fotos[index].classList.add("active");
-        frase.innerText=frases[index];
+        frase.innerText = frases[index];
     } else {
         clearInterval(intervalo);
         setTimeout(()=>{
             document.getElementById("creditos").style.opacity="1";
         },4000);
     }
-},6000);
+}
 
 </script>
 
