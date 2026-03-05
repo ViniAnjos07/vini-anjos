@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma surpresa pra você ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+.tela {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#inicio {
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+}
+
+#amor {
+    display: none;
+    background: url("foto.jpeg") no-repeat center center;
+    background-size: cover;
+    color: white;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.sim {
+    background: #ff2e63;
+    color: white;
+}
+
+.nao {
+    background: white;
+    color: #ff2e63;
+}
+
+.mensagem {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    background: rgba(0,0,0,0.5);
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.heart {
+    position: absolute;
+    animation: cair linear infinite;
+    color: #ff2e63;
+}
+
+@keyframes cair {
+    0% { transform: translateY(-10vh); opacity: 1; }
+    100% { transform: translateY(110vh); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div id="inicio" class="tela">
+    <h1>Tem certeza que deseja continuar? 💌</h1>
+    <button class="sim" onclick="mostrarAmor()">SIM 💖</button>
+    <button class="nao" onclick="alert('Ahhh... tenta de novo 😅')">NÃO</button>
+</div>
+
+<div id="amor" class="tela">
+    <div class="mensagem">
+        Eu te amo infinitamente, minha Thay ❤️<br>
+        Você é o melhor capítulo da minha vida.
+    </div>
+
+    <br><br>
+    <button onclick="tocarMusica()">Toque aqui 💖</button>
+</div>
+
+<audio id="musica" src="musica.mp3"></audio>
+
+<script>
+function mostrarAmor() {
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("amor").style.display = "flex";
+}
+
+function tocarMusica() {
+    let audio = document.getElementById("musica");
+    audio.play();
+    setInterval(criarCoracao, 300);
+}
+
+function criarCoracao() {
+    const coracao = document.createElement("div");
+    coracao.classList.add("heart");
+    coracao.innerHTML = "❤️";
+    coracao.style.left = Math.random() * 100 + "vw";
+    coracao.style.fontSize = (Math.random() * 20 + 15) + "px";
+    coracao.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    document.body.appendChild(coracao);
+
+    setTimeout(() => {
+        coracao.remove();
+    }, 5000);
+}
+</script>
+
+</body>
+</html>
