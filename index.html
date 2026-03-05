@@ -60,6 +60,11 @@ button:hover {
     font-size: 26px;
     margin-top: 20px;
     animation: fadeIn 2s ease forwards;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 @keyframes fadeIn {
@@ -70,6 +75,9 @@ button:hover {
 </head>
 
 <body>
+
+<!-- Música de fundo -->
+<audio id="musica" src="musica.mp3" autoplay loop></audio>
 
 <div class="container">
     <img id="imagem" src="foto1.jpeg">
@@ -98,6 +106,12 @@ const img = document.getElementById("imagem");
 const frase = document.getElementById("frase");
 const botao = document.getElementById("botao");
 
+// Pré-carregar imagens
+imagens.forEach(src => {
+    const i = new Image();
+    i.src = src;
+});
+
 frase.innerText = frases[0];
 
 function proximo() {
@@ -112,7 +126,7 @@ function proximo() {
             frase.innerText = frases[indice];
             img.style.opacity = 1;
             frase.style.opacity = 1;
-        }, 500);
+        }, 800);
 
     } else {
         img.style.display = "none";
