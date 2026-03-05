@@ -1,218 +1,125 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uma História Especial ❤️</title>
+<title>Para Você ❤️</title>
 
 <style>
-body{
-    margin:0;
-    padding:0;
-    background:black;
-    font-family: Arial, sans-serif;
-    color:white;
-    overflow:hidden;
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    overflow: hidden;
 }
 
-/* SUSPENSE */
-.suspense{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    z-index:20;
-    font-size:28px;
-    text-align:center;
+.container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.fade{opacity:0; transition:2s;}
-.show{opacity:1;}
-
-/* INTRO */
-.intro{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    z-index:10;
+img {
+    max-width: 90%;
+    max-height: 70vh;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(255,255,255,0.3);
+    margin-bottom: 20px;
+    transition: opacity 0.8s ease;
 }
 
-.intro h1{font-size:40px; text-align:center; padding:20px;}
-.intro button{
-    margin-top:20px;
-    padding:12px 30px;
-    border:none;
-    background:red;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+.frase {
+    font-size: 22px;
+    margin: 20px;
+    min-height: 60px;
+    transition: opacity 0.8s ease;
 }
 
-/* GALERIA */
-.galeria{
-    position:absolute;
-    width:100%;
-    height:100%;
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    background: crimson;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.galeria img{
-    position:absolute;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:0;
-    transition:2s;
-    transform:scale(1);
+button:hover {
+    background: darkred;
+    transform: scale(1.05);
 }
 
-.galeria img.active{
-    opacity:1;
-    animation: zoom 6s linear;
+.creditos {
+    font-size: 26px;
+    margin-top: 20px;
+    animation: fadeIn 2s ease forwards;
 }
 
-@keyframes zoom{
-    from{transform:scale(1);}
-    to{transform:scale(1.1);}
-}
-
-/* FRASE */
-.frase{
-    position:absolute;
-    bottom:60px;
-    width:100%;
-    text-align:center;
-    font-size:24px;
-    background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-    padding:30px;
-}
-
-/* CREDITOS */
-.creditos{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:32px;
-    opacity:0;
-    transition:4s;
-    text-align:center;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="suspense" id="suspense">
-    <div id="textoSuspense" class="fade"></div>
+<div class="container">
+    <img id="imagem" src="foto1.jpeg">
+    <div class="frase" id="frase"></div>
+    <button onclick="proximo()" id="botao">Prosseguir</button>
 </div>
-
-<div class="intro" id="intro">
-    <h1>Nem toda história começa com planos...</h1>
-    <button onclick="iniciar()">Começar</button>
-</div>
-
-<div class="galeria">
-    <img src="foto.jpeg">
-    <img src="foto1.jpeg">
-    <img src="foto2.jpeg">
-    <img src="foto3.jpeg">
-    <img src="foto4.jpeg">
-</div>
-
-<div class="frase" id="frase"></div>
-
-<div class="creditos" id="creditos">
-    Do seu amor, Vini ❤️
-</div>
-
-<audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
-</audio>
 
 <script>
-
-/* SUSPENSE */
-const suspenseTextos = [
-"Espera...",
-"Antes de começar...",
-"Eu preciso que você sinta isso...",
-"Porque isso não é só um site.",
-"É algo que nasceu aqui dentro..."
+const imagens = [
+    "foto1.jpeg",
+    "foto2.jpeg",
+    "foto3.jpeg",
+    "foto4.jpeg"
 ];
 
-let sIndex = 0;
-const textoSuspense = document.getElementById("textoSuspense");
-
-function mostrarSuspense(){
-    if(sIndex < suspenseTextos.length){
-        textoSuspense.classList.remove("show");
-        setTimeout(()=>{
-            textoSuspense.innerText = suspenseTextos[sIndex];
-            textoSuspense.classList.add("show");
-            sIndex++;
-        },1000);
-    } else {
-        clearInterval(loopSuspense);
-        setTimeout(()=>{
-            document.getElementById("suspense").style.display="none";
-            document.getElementById("intro").style.display="flex";
-        },2000);
-    }
-}
-
-let loopSuspense = setInterval(mostrarSuspense,4000);
-
-/* SHOW */
 const frases = [
-"Mas às vezes começa com um olhar diferente...",
-"E sem perceber, você já se tornou especial.",
-"Seu sorriso mudou o meu dia mais de uma vez.",
-"Tem algo em você que me faz querer ficar.",
-"E talvez… seja só o começo de algo lindo."
+    "Desde que você apareceu, meus dias ganharam cor.",
+    "Seu sorriso é o meu lugar favorito no mundo.",
+    "Cada momento ao seu lado é um presente.",
+    "Você é o sentimento mais bonito que já vivi."
 ];
 
-let index = 0;
-const fotos = document.querySelectorAll(".galeria img");
+let indice = 0;
+
+const img = document.getElementById("imagem");
 const frase = document.getElementById("frase");
-let intervalo;
+const botao = document.getElementById("botao");
 
-function iniciar(){
-    document.getElementById("intro").style.display="none";
-    document.getElementById("musica").play();
+frase.innerText = frases[0];
 
-    fotos[0].classList.add("active");
-    frase.innerText = frases[0];
+function proximo() {
+    indice++;
 
-    intervalo = setInterval(trocarFoto,6000);
-}
+    if (indice < imagens.length) {
+        img.style.opacity = 0;
+        frase.style.opacity = 0;
 
-function trocarFoto(){
-    fotos[index].classList.remove("active");
-    index++;
+        setTimeout(() => {
+            img.src = imagens[indice];
+            frase.innerText = frases[indice];
+            img.style.opacity = 1;
+            frase.style.opacity = 1;
+        }, 500);
 
-    if(index < fotos.length){
-        fotos[index].classList.add("active");
-        frase.innerText = frases[index];
     } else {
-        clearInterval(intervalo);
-        setTimeout(()=>{
-            document.getElementById("creditos").style.opacity="1";
-        },4000);
+        img.style.display = "none";
+        frase.innerHTML = '<div class="creditos">Do seu amor,<br>Vini ❤️</div>';
+        botao.style.display = "none";
     }
 }
-
 </script>
 
 </body>
