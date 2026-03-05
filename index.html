@@ -3,122 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uma surpresa pra você ❤️</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<title>Uma História Especial ❤️</title>
 
 <style>
-body {
-    margin: 0;
+body{
+    margin:0;
+    padding:0;
+    background:black;
     font-family: Arial, sans-serif;
-    text-align: center;
-    overflow: hidden;
+    color:white;
+    overflow:hidden;
 }
 
-.tela {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* ===== SUSPENSE ===== */
+.suspense{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:20;
+    font-size:28px;
+    text-align:center;
 }
 
-#inicio {
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    color: white;
+.fade{
+    opacity:0;
+    transition:2s;
 }
 
-#amor {
-    display: none;
-    background: url("foto.jpeg") no-repeat center center;
-    background-size: cover;
-    color: white;
+.show{
+    opacity:1;
 }
 
-button {
-    padding: 15px 35px;
-    font-size: 18px;
-    border-radius: 30px;
-    border: none;
-    margin: 10px;
-    cursor: pointer;
+/* ===== INTRO ===== */
+.intro{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:10;
 }
 
-.sim {
-    background: #ff2e63;
-    color: white;
+.intro h1{
+    font-size:42px;
+    text-align:center;
+    padding:20px;
 }
 
-.nao {
-    background: white;
-    color: #ff2e63;
+.intro button{
+    margin-top:20px;
+    padding:12px 30px;
+    border:none;
+    background:red;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    border-radius:5px;
 }
 
-.mensagem {
-    font-family: 'Great Vibes', cursive;
-    font-size: 3rem;
-    background: rgba(0,0,0,0.5);
-    padding: 30px;
-    border-radius: 20px;
+/* ===== GALERIA CINEMÁTICA ===== */
+.galeria{
+    position:absolute;
+    width:100%;
+    height:100%;
 }
 
-.heart {
-    position: absolute;
-    animation: cair linear infinite;
-    color: #ff2e63;
+.galeria img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:2s;
+    transform:scale(1);
 }
 
-@keyframes cair {
-    0% { transform: translateY(-10vh); opacity: 1; }
-    100% { transform: translateY(110vh); opacity: 0; }
+.galeria img.active{
+    opacity:1;
+    animation: zoom 6s linear;
+}
+
+@keyframes zoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.1);}
+}
+
+/* ===== FRASES ===== */
+.frase{
+    position:absolute;
+    bottom:60px;
+    width:100%;
+    text-align:center;
+    font-size:24px;
+    background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    padding:30px;
+    transition:1s;
+}
+
+/* ===== CREDITOS ===== */
+.creditos{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
+    opacity:0;
+    transition:4s;
+    text-align:center;
 }
 </style>
 </head>
+
 <body>
 
-<div id="inicio" class="tela">
-    <h1>Tem certeza que deseja continuar? 💌</h1>
-    <button class="sim" onclick="mostrarAmor()">SIM 💖</button>
-    <button class="nao" onclick="alert('Ahhh... tenta de novo 😅')">NÃO</button>
+<!-- SUSPENSE -->
+<div class="suspense" id="suspense">
+    <div id="textoSuspense" class="fade"></div>
 </div>
 
-<div id="amor" class="tela">
-    <div class="mensagem">
-        Eu te amo infinitamente, minha Thay ❤️<br>
-        Você é o melhor capítulo da minha vida.
-    </div>
-
-    <br><br>
-    <button onclick="tocarMusica()">Toque aqui 💖</button>
+<!-- INTRO -->
+<div class="intro" id="intro">
+    <h1>Nem toda história começa com planos...</h1>
+    <button onclick="iniciar()">Começar</button>
 </div>
 
-<audio id="musica" src="musica.mp3"></audio>
+<!-- GALERIA -->
+<div class="galeria">
+    <img src="foto.jpeg" class="active">
+    <img src="foto1.jpeg">
+    <img src="foto2.jpeg">
+    <img src="foto3.jpeg">
+    <img src="foto4.jpeg">
+</div>
+
+<!-- FRASE -->
+<div class="frase" id="frase"></div>
+
+<!-- CREDITOS -->
+<div class="creditos" id="creditos">
+    Do seu amor, Vini ❤️
+</div>
+
+<!-- MUSICA -->
+<audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function mostrarAmor() {
-    document.getElementById("inicio").style.display = "none";
-    document.getElementById("amor").style.display = "flex";
+
+/* ===== SUSPENSE ===== */
+const suspenseTextos = [
+"Espera...",
+"Antes de começar...",
+"Eu preciso que você sinta isso...",
+"Porque isso não é só um site.",
+"É algo que nasceu aqui dentro..."
+];
+
+let sIndex = 0;
+const textoSuspense = document.getElementById("textoSuspense");
+
+function mostrarSuspense(){
+    if(sIndex < suspenseTextos.length){
+        textoSuspense.classList.remove("show");
+        setTimeout(()=>{
+            textoSuspense.innerText = suspenseTextos[sIndex];
+            textoSuspense.classList.add("show");
+            sIndex++;
+        },1000);
+    } else {
+        setTimeout(()=>{
+            document.getElementById("suspense").style.display="none";
+            document.getElementById("intro").style.display="flex";
+        },2000);
+        clearInterval(loopSuspense);
+    }
 }
 
-function tocarMusica() {
-    let audio = document.getElementById("musica");
-    audio.play();
-    setInterval(criarCoracao, 300);
+let loopSuspense = setInterval(mostrarSuspense,4000);
+
+/* ===== SHOW PRINCIPAL ===== */
+const frases = [
+"Mas às vezes começa com um olhar diferente...",
+"E sem perceber, você já se tornou especial.",
+"Seu sorriso mudou o meu dia mais de uma vez.",
+"Tem algo em você que me faz querer ficar.",
+"E talvez… seja só o começo de algo lindo."
+];
+
+let index=0;
+const fotos=document.querySelectorAll(".galeria img");
+const frase=document.getElementById("frase");
+
+function iniciar(){
+    document.getElementById("intro").style.display="none";
+    document.getElementById("musica").play();
+    frase.innerText=frases[0];
 }
 
-function criarCoracao() {
-    const coracao = document.createElement("div");
-    coracao.classList.add("heart");
-    coracao.innerHTML = "❤️";
-    coracao.style.left = Math.random() * 100 + "vw";
-    coracao.style.fontSize = (Math.random() * 20 + 15) + "px";
-    coracao.style.animationDuration = (Math.random() * 3 + 2) + "s";
-    document.body.appendChild(coracao);
+let intervalo = setInterval(()=>{
+    if(index < fotos.length-1){
+        fotos[index].classList.remove("active");
+        index++;
+        fotos[index].classList.add("active");
+        frase.innerText=frases[index];
+    } else {
+        clearInterval(intervalo);
+        setTimeout(()=>{
+            document.getElementById("creditos").style.opacity="1";
+        },4000);
+    }
+},6000);
 
-    setTimeout(() => {
-        coracao.remove();
-    }, 5000);
-}
 </script>
 
 </body>
